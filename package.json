@@ -31,6 +31,8 @@
     "glob": "^11.0.3"
   },
   "dependencies": {
+    "@fontsource-variable/lexend": "^5.2.11",
+    "@fontsource-variable/public-sans": "^5.2.7",
     "d3": "^7.9.0",
     "papaparse": "^5.5.3"
   }

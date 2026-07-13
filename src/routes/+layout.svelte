@@ -1,5 +1,8 @@
 <!-- src/routes/+layout.svelte -->
 <script>
+  // Self-hosted fonts (no external Google Fonts request):
+  import '@fontsource-variable/lexend';
+  import '@fontsource-variable/public-sans';
   // Pull in your global styles:
   import '../app.css';
 </script>

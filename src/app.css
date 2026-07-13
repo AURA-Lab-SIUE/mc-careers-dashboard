@@ -1,6 +1,6 @@
 /* src/app.css — Career Pathfinder */
-
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+/* Lexend + Public Sans are self-hosted via @fontsource, imported in
+   +layout.svelte — no external Google Fonts request. */
 
 :root {
   --white: #fff;
