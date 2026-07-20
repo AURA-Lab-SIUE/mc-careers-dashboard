@@ -13,6 +13,7 @@
   --accent: #e31837;
   --accent-light: #fdeaed;
   --accent-dark: #b3132c;
+  --accent-fill: var(--accent);   /* button fill — split from --accent so dark can darken it while white text still clears AA */
   --journalism: #1a6baa;
   --production: #2e7d32;
   --strategic: #7b1fa2;
@@ -253,7 +254,7 @@ a:hover { text-decoration: underline; }
   font-family: var(--title-font);
   font-weight: 800;
   font-size: 0.85rem;
-  color: var(--white);
+  color: #fff;
   flex-shrink: 0;
 }
 
@@ -354,8 +355,8 @@ a:hover { text-decoration: underline; }
 }
 
 .btn-primary {
-  background: var(--accent);
-  color: var(--white);
+  background: var(--accent-fill);
+  color: #fff;
 }
 
 .btn-primary:hover { background: var(--accent-dark); }
@@ -441,4 +442,41 @@ a:hover { text-decoration: underline; }
   .app { max-width: 100%; padding: 0; }
   .card { border: 1px solid #ccc; break-inside: avoid; }
   h1::after { content: " — SIUE Mass Communications"; }
+}
+
+/* Dark theme — matches the AURA Lab dark-default site so arriving from it stays
+   consistent. Inverts the greyscale ramp and lifts the accent for AA as TEXT;
+   solid red fills keep white text via the darker --accent-fill. All pairs
+   verified >= WCAG AA. Follows the OS preference (embed has no theme toggle). */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white:       #14161a;   /* page ground (was #fff)          */
+    --grey-05:     #1c1f24;   /* subtle raised surface           */
+    --grey-10:     #23272d;   /* hairlines / tier-intro / tracks */
+    --grey-20:     #363c44;   /* card + input borders            */
+    --grey-50:     #9ca3ab;   /* muted text (7.1:1 on ground)    */
+    --grey-70:     #c4c9cf;   /* secondary text                  */
+    --grey-90:     #ecedef;   /* primary text (15.5:1)           */
+    --accent:      #ef5350;   /* lifted so accent TEXT clears AA (5.2:1) */
+    --accent-fill: #d11730;   /* solid button fill — white text 5.4:1    */
+    --accent-light:#2a1518;   /* dark red tint: selected / focus / advanced bg */
+    --accent-dark: #b3132c;   /* button hover fill — white text 6.9:1    */
+    --journalism:  #6bb6e6;
+    --production:  #7fca86;
+    --strategic:   #cf9ae6;
+    color-scheme: dark;
+  }
+
+  /* Re-skin the hardcoded light tinted backgrounds (badges/tiers/skills) for dark.
+     Text colors follow the redefined --journalism/--production/--strategic tokens. */
+  .badge-journalism { background: #12303f; }
+  .badge-production { background: #14331a; }
+  .badge-strategic  { background: #2a1638; }
+  .tier-intermediate { background: #3a2410; color: #ffb060; }
+  .tier-advanced     { background: var(--accent-light); color: var(--accent); }
+  .tier-track        { background: #1a1f3d; color: #a3b0f0; }
+  .relevance-mid     { background: #ffb060; }
+  .skill-covered     { background: #14331a; }
+  .skill-gap         { background: #3a2410; color: #ffb060; }
+  .card:hover        { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); }
 }
