@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { PageData } from './$types';
   import WageDistributionChart from '$lib/components/WageDistributionChart.svelte';
+  import { onMount } from 'svelte';
 
   export let data: PageData;
   const {
@@ -15,6 +16,36 @@
   // ── State ──────────────────────────────────────────
   type Tab = 'discover' | 'career' | 'skill' | 'salary' | 'plan';
   let activeTab: Tab = 'discover';
+
+  // ── Theme (light/dark) ──────────────────
+  let theme: 'light' | 'dark' = 'light';
+  onMount(() => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    theme = cur === 'dark' ? 'dark' : 'light';
+  });
+  function toggleTheme() {
+    theme = theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem('mc-theme', theme); } catch (e) { /* private mode */ }
+  }
+
+  // ── Data provenance (shown in footer; keep in sync with the CSVs) ──
+  const WAGE_SOURCE = 'BLS OEWS';
+  const WAGE_VINTAGE = 'May 2025';
+
+  // ── Course-suggestion grouping (curriculum path) ─────────
+  const TIER_GROUPS = [
+    { label: 'Foundational Core',       tiers: ['intro_core'] },
+    { label: 'Track Requirements',      tiers: ['track_required'] },
+    { label: 'Advanced Core',           tiers: ['advanced_core'] },
+    { label: 'Recommended Electives',   tiers: ['intermediate_core', 'track_elective', 'elective'] }
+  ];
+  function groupCourses(list: any[]) {
+    return TIER_GROUPS
+      .map(g => ({ label: g.label, items: list.filter((c: any) => g.tiers.includes(c.tier)) }))
+      .filter(g => g.items.length);
+  }
+  $: groupedCourses = groupCourses(recommendedCourses);
 
   // Discovery survey — branching tree
   let surveyPath: { key: string; question: string; options: { label: string; value: string }[] }[] = [];
@@ -539,7 +570,15 @@
 </script>
 
 <div class="app">
-  <h1>Career Pathfinder</h1>
+  <div class="app-header">
+    <h1>Career Pathfinder</h1>
+    <button class="theme-toggle" type="button" on:click={toggleTheme}
+      aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+      title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}>
+      <span class="icon" aria-hidden="true">{theme === 'dark' ? '☀️' : '🌙'}</span>
+      <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
+    </button>
+  </div>
   <p style="color: var(--grey-50); margin-bottom: 20px; font-size: 0.9rem;">
     Explore careers, discover which courses prepare you, and build your plan.
   </p>
@@ -706,7 +745,9 @@
             <p style="font-size:0.8rem;color:var(--grey-50);margin-bottom:12px;">
               Courses ranked by relevance to this career. Tap + to add to your plan.
             </p>
-            {#each recommendedCourses as course}
+            {#each groupedCourses as group}
+              <div class="course-group-label" style="font-family:var(--title-font);font-size:0.72rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--grey-50);margin:14px 0 6px;">{group.label}</div>
+              {#each group.items as course}
               <div class="course-item">
                 <div class="course-score" style="background:{scoreColor(course.score)}">
                   {Math.round(course.score)}
@@ -729,6 +770,7 @@
                   on:click={() => addToPlan(course.courseKey, course.courseName, course.tier)}
                   style="color:var(--production);font-size:1.4rem;">+</button>
               </div>
+              {/each}
             {/each}
           </div>
         {/if}
@@ -898,6 +940,6 @@
   <footer style="text-align:center;padding:24px 0 12px;font-size:0.75rem;color:var(--grey-50);border-top:1px solid var(--grey-10);margin-top:24px;">
     SIUE Department of Mass Communications &middot;
     <a href="https://www.siue.edu/arts-and-sciences/mass-communications/">Department Website</a> &middot;
-    Data: O*NET &amp; BLS &middot; Curriculum: Fall 2026
+    Wage data: {WAGE_SOURCE} {WAGE_VINTAGE} &middot; Occupations &amp; skills: O*NET &middot; Curriculum: Fall 2026
   </footer>
 </div>
