@@ -309,6 +309,7 @@
 
     return Array.from(scores.entries())
       .map(([title, data]) => ({ title, ...data }))
+      .filter((r: any) => isPlannable(r.title))
       .sort((a, b) => b.score - a.score)
       .slice(0, 8);
   })();
@@ -341,6 +342,15 @@
     ? Object.keys(courseJobRatings[0]).filter(k => k !== 'Course' && k !== 'Description')
     : []
   ));
+
+  // Base titles that actually yield a course plan (>=1 course scoring >10).
+  // Every tab filters through this so a non-plannable occupation is never offered.
+  const plannableBaseTitles = new Set(
+    baseOccTitles
+      .filter((col: string) => courseJobRatings.some((row: any) => (parseFloat(row[col]) || 0) > 10))
+      .map((col: string) => col.toLowerCase().trim())
+  );
+  const isPlannable = (baseTitle: string) => plannableBaseTitles.has(baseTitle.toLowerCase().trim());
 
   // Unique technologies for skill search
   const allTechTools = technologies.map((t: any) => ({
@@ -465,7 +475,8 @@
     const matchingTitleAlts = occupationTechnologies
       .filter((ot: any) => Number(ot.Tech_ID) === techId)
       .map((ot: any) => ot['Title - Alt']);
-    const uniqueTitles = Array.from(new Set(matchingTitleAlts));
+    const uniqueTitles = Array.from(new Set(matchingTitleAlts))
+      .filter((title: any) => isPlannable(getBaseTitle(title)));
     return uniqueTitles.slice(0, 8).map(title => {
       const occ = occupations.find((o: any) => o['Title - Alt'] === title);
       return { title, track: occ?.Track || '' };
@@ -491,6 +502,7 @@
         const base = getBaseTitle(o['Title - Alt']);
         if (seen.has(base)) return false;
         if (!wage || wage < salaryMin) return false;
+        if (!isPlannable(base)) return false;
         seen.add(base);
         return true;
       })
@@ -939,7 +951,7 @@
   <!-- Footer -->
   <footer style="text-align:center;padding:24px 0 12px;font-size:0.75rem;color:var(--grey-50);border-top:1px solid var(--grey-10);margin-top:24px;">
     SIUE Department of Mass Communications &middot;
-    <a href="https://www.siue.edu/arts-and-sciences/mass-communications/">Department Website</a> &middot;
+    <a href="https://www.siue.edu/arts-and-sciences/mass-communications/" target="_blank" rel="noopener">Department Website</a> &middot;
     Wage data: {WAGE_SOURCE} {WAGE_VINTAGE} &middot; Occupations &amp; skills: O*NET &middot; Curriculum: Fall 2026
   </footer>
 </div>
