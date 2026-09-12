@@ -61,7 +61,7 @@
         { label: 'Writing stories, articles, or scripts', value: 'writing' },
         { label: 'Creating videos, audio, or visual content', value: 'production' },
         { label: 'Planning campaigns, brands, and strategies', value: 'strategy' },
-        { label: 'I\'m not sure yet — help me explore', value: 'unsure' }
+        { label: 'I\'m not sure yet: help me explore', value: 'unsure' }
       ]
     },
     // Branch: Writing
@@ -87,10 +87,10 @@
     production_type: {
       question: 'What medium draws you in?',
       options: [
-        { label: 'Video — shooting and editing', value: 'video' },
-        { label: 'Audio — podcasts, radio, sound design', value: 'audio' },
+        { label: 'Video: shooting and editing', value: 'video' },
+        { label: 'Audio: podcasts, radio, sound design', value: 'audio' },
         { label: 'Photography and visual storytelling', value: 'photo' },
-        { label: 'A mix — I want to do it all', value: 'mixed' }
+        { label: 'A mix: I want to do it all', value: 'mixed' }
       ]
     },
     production_context: {
@@ -115,10 +115,10 @@
     strategy_focus: {
       question: 'Which part of strategy appeals to you?',
       options: [
-        { label: 'Creative — designing ads, writing copy', value: 'creative' },
-        { label: 'Analytical — research, data, media planning', value: 'analytical' },
-        { label: 'Relationship — client management, PR, events', value: 'relationships' },
-        { label: 'Digital — social media, web, SEO', value: 'digital_mkt' }
+        { label: 'Creative: designing ads, writing copy', value: 'creative' },
+        { label: 'Analytical: research, data, media planning', value: 'analytical' },
+        { label: 'Relationship: client management, PR, events', value: 'relationships' },
+        { label: 'Digital: social media, web, SEO', value: 'digital_mkt' }
       ]
     },
     // Branch: Unsure
@@ -134,16 +134,16 @@
     unsure_pace: {
       question: 'What pace do you prefer?',
       options: [
-        { label: 'Fast — deadlines, breaking news, quick turnaround', value: 'fast' },
-        { label: 'Steady — planned projects with clear timelines', value: 'steady' },
-        { label: 'Creative — flexible, iterative, exploratory', value: 'creative_pace' }
+        { label: 'Fast: deadlines, breaking news, quick turnaround', value: 'fast' },
+        { label: 'Steady: planned projects with clear timelines', value: 'steady' },
+        { label: 'Creative: flexible, iterative, exploratory', value: 'creative_pace' }
       ]
     },
     // Universal closing questions (everyone gets these)
     data_comfort: {
       question: 'How do you feel about working with data and numbers?',
       options: [
-        { label: 'I enjoy it — analytics, stats, research', value: 'love' },
+        { label: 'I enjoy it: analytics, stats, research', value: 'love' },
         { label: 'It\'s fine when I need to use it', value: 'okay' },
         { label: 'I\'d rather focus on creative work', value: 'avoid' }
       ]
@@ -161,9 +161,9 @@
     teamwork: {
       question: 'How do you prefer to work?',
       options: [
-        { label: 'On a team — collaboration energizes me', value: 'team' },
-        { label: 'Independently — I do my best work solo', value: 'solo' },
-        { label: 'Leading others — I like being in charge', value: 'leader' }
+        { label: 'On a team: collaboration energizes me', value: 'team' },
+        { label: 'Independently: I do my best work solo', value: 'solo' },
+        { label: 'Leading others: I like being in charge', value: 'leader' }
       ]
     }
   };
