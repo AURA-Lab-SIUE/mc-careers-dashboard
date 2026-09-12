@@ -521,7 +521,7 @@
             ...c,
             courseId,
             tier: currData?.Tier || 'elective',
-            requiredFor: currData?.Required_For || '',
+            countsFor: currData?.Counts_For || '',
             courseName: currData?.Course_Name || c.courseKey.split(' - ').slice(1).join(' - ') || c.courseKey
           };
         });
@@ -631,6 +631,30 @@
       case 'track_elective': return 'Track Elective';
       default: return 'Elective';
     }
+  }
+
+  // Counts_For is the multi-valued replacement for the old per-track duplicate
+  // rows: "all" for the eight courses every track requires, otherwise a
+  // pipe-separated list of the tracks a course counts toward, whether as a
+  // requirement or as an elective. "elective" means it counts on no track in
+  // particular, which needs no badge.
+  const TRACK_NAMES: Record<string, string> = {
+    journalism: 'Journalism',
+    production: 'Media Production',
+    strategic: 'Advertising & Strategic Media'
+  };
+  function countsLabel(counts: string): string {
+    if (!counts || counts === 'elective') return '';
+    if (counts === 'all') return 'Required on every track';
+    const names = counts.split('|').map((c) => TRACK_NAMES[c] || c);
+    // All three named, but not core everywhere: an elective that every track
+    // will take. Spelling out three track names here reads like the "required"
+    // badge above it, which is the one thing this badge must not be confused for.
+    if (names.length === 3) return 'Counts toward every track';
+    const list = names.length > 1
+      ? names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1]
+      : names[0];
+    return 'Counts toward ' + list;
   }
 
   function tierBadgeClass(tier: string): string {
@@ -843,8 +867,8 @@
                   </h4>
                   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">
                     <span class="tier-badge {tierBadgeClass(course.tier)}">{tierLabel(course.tier)}</span>
-                    {#if course.requiredFor === 'all'}
-                      <span class="tier-badge tier-advanced">Required</span>
+                    {#if countsLabel(course.countsFor)}
+                      <span class="tier-badge tier-advanced">{countsLabel(course.countsFor)}</span>
                     {/if}
                   </div>
                 </div>
