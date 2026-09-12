@@ -332,6 +332,73 @@
 
   // My Plan
   let planCourses: any[] = [];
+
+  // ── Degree requirements ────────────────────────────
+  // Source of truth: MC Checksheets_Updated_2025.docx (department SharePoint,
+  // Curriculum/Working Documents on Curriculum). These are REQUIREMENTS, not
+  // recommendations: they do not depend on the career a student picks, and the
+  // tool must never let a plan look complete while one of them is unmet.
+  const CORE_ALL = [
+    { id: 'MC201', label: 'MC 201', name: 'Mass Media in Society' },
+    { id: 'MC202', label: 'MC 202', name: 'Writing for the Media' },
+    { id: 'MC204', label: 'MC 204', name: 'Introduction to Audio and Video Production' },
+    { id: 'MC327', label: 'MC 327', name: 'Writing and Designing for Digital Media' },
+    { id: 'MC401', label: 'MC 401', name: 'Media Law and Policy' },
+    { id: 'MC403', label: 'MC 403', name: 'Cultural Studies in Media' },
+    { id: 'MC481', label: 'MC 481', name: 'Internship / Senior Portfolio' }
+  ];
+  const REQUIREMENTS: Record<string, any> = {
+    'Advertising & Strategic Media': {
+      core: [...CORE_ALL, { id: 'MC455', label: 'MC 455', name: 'Media Ethics' }],
+      methodsSlot: {
+        options: ['MC 451 Research Methods in Mass Media', 'ACS 329 (ACS minors only)'],
+        note: 'ACS 329 is open only to ACS minors, so for most students on this track MC 451 is the only way to fill this required slot. There is no statistics substitute.'
+      },
+      trackRequired: [
+        { id: 'MC325', label: 'MC 325', name: 'Fundamentals of Advertising' },
+        { id: 'MC389', label: 'MC 389', name: 'Media Planning' },
+        { id: 'MC422', label: 'MC 422', name: 'Strategic Media Writing' }
+      ],
+      electiveRule: 'Choose two track electives from MC 323, 326, 334, 342, 402, 421, 431, 440, 441, 449, 453, 471, 478.'
+    },
+    'Media Production': {
+      core: [...CORE_ALL, { id: 'MC455', label: 'MC 455', name: 'Media Ethics' }],
+      methodsSlot: {
+        options: ['MC 451 Research Methods in Mass Media', 'ACS 329 (ACS minors only)', 'STAT 244', 'STAT 380'],
+        note: 'Any one of these fills the slot. MC 451 is the in-department option.'
+      },
+      trackRequired: [
+        { id: 'MC330', label: 'MC 330', name: 'Advanced Broadcast Writing' }
+      ],
+      electiveRule: 'Choose four Media Production electives from MC 301, 331, 332, 333, 334, 342, 402, 431, 433, 440, 441, 443, 454, 456. At least one must be 300-level.'
+    },
+    'Journalism': {
+      core: [...CORE_ALL, { id: 'PHIL481', label: 'PHIL 481', name: 'Media Ethics (Journalism takes PHIL 481, not MC 455)' }],
+      methodsSlot: {
+        options: ['MC 451 Research Methods in Mass Media', 'ACS 329 (ACS minors only)', 'STAT 244', 'STAT 380'],
+        note: 'Any one of these fills the slot. MC 451 is the in-department option.'
+      },
+      trackRequired: [
+        { id: 'MC322', label: 'MC 322', name: 'Copy Editing for the Media' },
+        { id: 'MC324', label: 'MC 324', name: 'Advanced News Reporting' }
+      ],
+      electiveRule: 'Choose three Journalism electives from MC 321, 323, 330, 332, 341, 342, 424, 447, 453, 471, 472.'
+    }
+  };
+  // A rating that never moves across occupations is not a rating. These two
+  // values are the floor the unrated courses sit at; show no score for them.
+  const UNRATED_SCORES = [23.1, 23.8];
+  function isUnrated(score: number): boolean {
+    return UNRATED_SCORES.some(v => Math.abs(v - score) < 0.05);
+  }
+
+  $: requirements = REQUIREMENTS[selectedTrack] || null;
+  $: planIds = new Set(planCourses.map(c => (c.courseId || c.courseKey || '').replace(/\s/g, '')));
+  $: methodsMet = planCourses.some(c => (c.courseId || c.courseKey || '').includes('MC451'));
+  $: missingCore = requirements
+    ? [...requirements.core, ...requirements.trackRequired].filter((r: any) => !planIds.has(r.id))
+    : [];
+
   // planCareer reserved for future use
 
   // ── Derived data ───────────────────────────────────
@@ -675,7 +742,7 @@
               <span style="font-size:0.9rem;font-weight:600;">{result.title}</span>
               <span class="badge {trackBadgeClass(result.track)}" style="margin-left:8px;">{result.track}</span>
             </div>
-            <span style="font-size:0.8rem;color:var(--grey-50);">Score: {result.score}</span>
+            <span style="font-size:0.8rem;color:var(--grey-50);" title="How closely this career matches your survey answers">Match {result.score} of 9</span>
           </div>
         {/each}
       {/if}
@@ -755,14 +822,17 @@
           <div class="card">
             <h3>Recommended Courses</h3>
             <p style="font-size:0.8rem;color:var(--grey-50);margin-bottom:12px;">
-              Courses ranked by relevance to this career. Tap + to add to your plan.
+              Electives suggested for this career, grouped by where they sit in the degree. These are
+              suggestions on top of your requirements, never instead of them. Use + to add one to your plan.
             </p>
             {#each groupedCourses as group}
               <div class="course-group-label" style="font-family:var(--title-font);font-size:0.72rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--grey-50);margin:14px 0 6px;">{group.label}</div>
               {#each group.items as course}
               <div class="course-item">
-                <div class="course-score" style="background:{scoreColor(course.score)}">
-                  {Math.round(course.score)}
+                <div class="course-score"
+                     style="background:{isUnrated(course.score) ? 'var(--grey-10)' : scoreColor(course.score)};color:{isUnrated(course.score) ? 'var(--grey-50)' : '#fff'};"
+                     title={isUnrated(course.score) ? 'Not yet rated against this career' : 'Relevance to this career, 0 to 100'}>
+                  {isUnrated(course.score) ? '–' : Math.round(course.score)}
                 </div>
                 <div class="course-info">
                   <h4>
@@ -907,9 +977,82 @@
   <!-- ════════════════════════════════════════════════ -->
   {:else if activeTab === 'plan'}
     <div class="section">
+      <!-- Degree requirements: always shown, never dependent on career choice -->
+      <div class="card" style="margin-bottom:12px;">
+        <h2>Degree Requirements</h2>
+        {#if !selectedTrack}
+          <p style="font-size:0.85rem;color:var(--grey-70);">
+            Choose your professional track on the Browse Careers tab and your required courses will
+            be listed here. Requirements do not depend on which career you pick.
+          </p>
+        {:else}
+          <p style="font-size:0.85rem;color:var(--grey-70);">
+            These are required for <strong>{selectedTrack}</strong>. They are not suggestions, and
+            recommended courses do not replace them.
+          </p>
+          {#if missingCore.length || !methodsMet}
+            <div style="border:2px solid var(--accent);border-radius:8px;padding:10px 12px;margin:10px 0;background:rgba(200,16,46,0.06);">
+              <strong style="font-size:0.9rem;">Your plan is missing required courses.</strong>
+              <p style="font-size:0.82rem;margin:6px 0 0;color:var(--grey-70);">
+                {missingCore.length + (methodsMet ? 0 : 1)} requirement{(missingCore.length + (methodsMet ? 0 : 1)) === 1 ? '' : 's'}
+                still unmet. Bring this list and your DegreeWorks audit to advising.
+              </p>
+            </div>
+          {/if}
+
+          <h3 style="font-size:0.9rem;margin-top:12px;">Core, required of everyone on this track</h3>
+          {#each requirements.core as r}
+            <div class="plan-item">
+              <div>
+                <span style="color:{planIds.has(r.id) ? 'var(--accent)' : 'var(--grey-50)'};font-weight:700;">
+                  {planIds.has(r.id) ? '✓' : '○'}
+                </span>
+                <strong style="font-size:0.9rem;margin-left:6px;">{r.label}</strong>
+                <span style="font-size:0.85rem;color:var(--grey-70);margin-left:4px;">{r.name}</span>
+              </div>
+            </div>
+          {/each}
+
+          <h3 style="font-size:0.9rem;margin-top:14px;">Research and analysis requirement</h3>
+          <div class="plan-item">
+            <div>
+              <span style="color:{methodsMet ? 'var(--accent)' : 'var(--grey-50)'};font-weight:700;">
+                {methodsMet ? '✓' : '○'}
+              </span>
+              <span style="font-size:0.87rem;margin-left:6px;">
+                One of: {requirements.methodsSlot.options.join(' &middot; ')}
+              </span>
+            </div>
+          </div>
+          <p style="font-size:0.8rem;color:var(--grey-70);margin:4px 0 0 22px;">
+            {requirements.methodsSlot.note}
+          </p>
+
+          <h3 style="font-size:0.9rem;margin-top:14px;">Required for this track</h3>
+          {#each requirements.trackRequired as r}
+            <div class="plan-item">
+              <div>
+                <span style="color:{planIds.has(r.id) ? 'var(--accent)' : 'var(--grey-50)'};font-weight:700;">
+                  {planIds.has(r.id) ? '✓' : '○'}
+                </span>
+                <strong style="font-size:0.9rem;margin-left:6px;">{r.label}</strong>
+                <span style="font-size:0.85rem;color:var(--grey-70);margin-left:4px;">{r.name}</span>
+              </div>
+            </div>
+          {/each}
+          <p style="font-size:0.8rem;color:var(--grey-70);margin-top:8px;">{requirements.electiveRule}</p>
+
+          <p style="font-size:0.78rem;color:var(--grey-50);margin-top:12px;border-top:1px solid var(--grey-10);padding-top:8px;">
+            Requirements follow the catalog term you began under. If you declared the major before
+            Fall 2025, confirm your requirements against DegreeWorks or with your advisor before
+            registering.
+          </p>
+        {/if}
+      </div>
+
       {#if planCourses.length === 0}
         <div class="empty-state">
-          <p>Your plan is empty. Explore careers and tap + to add recommended courses.</p>
+          <p>You have not added any courses yet. Browse careers and use + to add recommended electives.</p>
         </div>
       {:else}
         <div class="card">
