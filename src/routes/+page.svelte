@@ -342,7 +342,7 @@
     { id: 'MC201', label: 'MC 201', name: 'Mass Media in Society' },
     { id: 'MC202', label: 'MC 202', name: 'Writing for the Media' },
     { id: 'MC204', label: 'MC 204', name: 'Introduction to Audio and Video Production' },
-    { id: 'MC327', label: 'MC 327', name: 'Writing and Designing for Digital Media' },
+    { id: 'MC327', label: 'MC 327', name: 'Essentials of Web Design' },
     { id: 'MC401', label: 'MC 401', name: 'Media Law and Policy' },
     { id: 'MC403', label: 'MC 403', name: 'Cultural Studies in Media' },
     { id: 'MC481', label: 'MC 481', name: 'Internship / Senior Portfolio' }
@@ -351,8 +351,8 @@
     'Advertising & Strategic Media': {
       core: [...CORE_ALL, { id: 'MC455', label: 'MC 455', name: 'Media Ethics' }],
       methodsSlot: {
-        options: ['MC 451 Research Methods in Mass Media', 'ACS 329 (ACS minors only)'],
-        note: 'ACS 329 is open only to ACS minors, so for most students on this track MC 451 is the only way to fill this required slot. There is no statistics substitute.'
+        required: 'MC 451 Research Methods in Mass Media',
+        exception: 'The only substitution is ACS 329, and only if you are an ACS minor. There is no statistics substitute on this track.'
       },
       trackRequired: [
         { id: 'MC325', label: 'MC 325', name: 'Fundamentals of Advertising' },
@@ -364,8 +364,8 @@
     'Media Production': {
       core: [...CORE_ALL, { id: 'MC455', label: 'MC 455', name: 'Media Ethics' }],
       methodsSlot: {
-        options: ['MC 451 Research Methods in Mass Media', 'ACS 329 (ACS minors only)', 'STAT 244', 'STAT 380'],
-        note: 'Any one of these fills the slot. MC 451 is the in-department option.'
+        required: 'MC 451 Research Methods in Mass Media',
+        exception: 'Substitutions exist but are exceptions, not equivalents: ACS 329 if you are an ACS minor, or STAT 244 or STAT 380. Ask your advisor before planning around one.'
       },
       trackRequired: [
         { id: 'MC330', label: 'MC 330', name: 'Advanced Broadcast Writing' }
@@ -375,8 +375,8 @@
     'Journalism': {
       core: [...CORE_ALL, { id: 'PHIL481', label: 'PHIL 481', name: 'Media Ethics (Journalism takes PHIL 481, not MC 455)' }],
       methodsSlot: {
-        options: ['MC 451 Research Methods in Mass Media', 'ACS 329 (ACS minors only)', 'STAT 244', 'STAT 380'],
-        note: 'Any one of these fills the slot. MC 451 is the in-department option.'
+        required: 'MC 451 Research Methods in Mass Media',
+        exception: 'Substitutions exist but are exceptions, not equivalents: ACS 329 if you are an ACS minor, or STAT 244 or STAT 380. Ask your advisor before planning around one.'
       },
       trackRequired: [
         { id: 'MC322', label: 'MC 322', name: 'Copy Editing for the Media' },
@@ -1020,12 +1020,12 @@
                 {methodsMet ? '✓' : '○'}
               </span>
               <span style="font-size:0.87rem;margin-left:6px;">
-                One of: {requirements.methodsSlot.options.join(' &middot; ')}
+                <strong>{requirements.methodsSlot.required}</strong>
               </span>
             </div>
           </div>
           <p style="font-size:0.8rem;color:var(--grey-70);margin:4px 0 0 22px;">
-            {requirements.methodsSlot.note}
+            {requirements.methodsSlot.exception}
           </p>
 
           <h3 style="font-size:0.9rem;margin-top:14px;">Required for this track</h3>
@@ -1043,9 +1043,9 @@
           <p style="font-size:0.8rem;color:var(--grey-70);margin-top:8px;">{requirements.electiveRule}</p>
 
           <p style="font-size:0.78rem;color:var(--grey-50);margin-top:12px;border-top:1px solid var(--grey-10);padding-top:8px;">
-            Requirements follow the catalog term you began under. If you declared the major before
-            Fall 2025, confirm your requirements against DegreeWorks or with your advisor before
-            registering.
+            This list follows the Fall 2025 catalog and later. Requirements follow the catalog term you
+            began under, and there is no published list of the differences, so if you entered before
+            Fall 2025 treat this as a starting point and confirm with an academic advisor.
           </p>
         {/if}
       </div>
