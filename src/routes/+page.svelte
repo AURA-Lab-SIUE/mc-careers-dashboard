@@ -347,7 +347,7 @@
     { id: 'MC403', label: 'MC 403', name: 'Cultural Studies in Media' },
     { id: 'MC481', label: 'MC 481', name: 'Internship / Senior Portfolio' }
   ];
-  const REQUIREMENTS: Record<string, any> = {
+  const CATALOG_2025: Record<string, any> = {
     'Advertising & Strategic Media': {
       core: [...CORE_ALL, { id: 'MC455', label: 'MC 455', name: 'Media Ethics' }],
       methodsSlot: {
@@ -359,6 +359,9 @@
         { id: 'MC389', label: 'MC 389', name: 'Media Planning' },
         { id: 'MC422', label: 'MC 422', name: 'Strategic Media Writing' }
       ],
+      electiveCount: 2,
+      electiveOptions: ['MC323','MC326','MC334','MC342','MC402','MC421','MC431','MC440','MC441','MC449','MC453','MC471','MC478'],
+      electiveNote: null,
       electiveRule: 'Choose two track electives from MC 323, 326, 334, 342, 402, 421, 431, 440, 441, 449, 453, 471, 478.'
     },
     'Media Production': {
@@ -370,6 +373,9 @@
       trackRequired: [
         { id: 'MC330', label: 'MC 330', name: 'Advanced Broadcast Writing' }
       ],
+      electiveCount: 4,
+      electiveOptions: ['MC301','MC331','MC332','MC333','MC334','MC342','MC402','MC431','MC433','MC440','MC441','MC443','MC454','MC456'],
+      electiveNote: 'At least one of the four must be 300-level.',
       electiveRule: 'Choose four Media Production electives from MC 301, 331, 332, 333, 334, 342, 402, 431, 433, 440, 441, 443, 454, 456. At least one must be 300-level.'
     },
     'Journalism': {
@@ -382,9 +388,85 @@
         { id: 'MC322', label: 'MC 322', name: 'Copy Editing for the Media' },
         { id: 'MC324', label: 'MC 324', name: 'Advanced News Reporting' }
       ],
+      electiveCount: 3,
+      electiveOptions: ['MC321','MC323','MC330','MC332','MC341','MC342','MC424','MC447','MC453','MC471','MC472'],
+      electiveNote: null,
       electiveRule: 'Choose three Journalism electives from MC 321, 323, 330, 332, 341, 342, 424, 447, 453, 471, 472.'
     }
   };
+
+  // 2026-27 onward. Source: the published undergraduate catalog,
+  // siue.edu/academics/undergraduate/degrees-and-programs/mass-communications/
+  // degree-requirements.shtml, read 2026-09-14. Captured alongside the audit as
+  // data/catalog-2026-27.json.
+  const INTRO_2026 = [
+    { id: 'MC201', label: 'MC 201', name: 'Mass Media in Society' },
+    { id: 'MC202', label: 'MC 202', name: 'Writing for the Media' },
+    { id: 'MC204', label: 'MC 204', name: 'Introduction to Audio and Video Production' }
+  ];
+  const ADVANCED_2026 = [
+    { id: 'MC401', label: 'MC 401', name: 'Media Law and Policy' },
+    { id: 'MC403', label: 'MC 403', name: 'Cultural Studies in Media' },
+    { id: 'MC451', label: 'MC 451', name: 'Research Methods in Mass Media' },
+    { id: 'MC455', label: 'MC 455', name: 'Media Ethics' },
+    { id: 'MC481', label: 'MC 481', name: 'Internship / Senior Portfolio' }
+  ];
+  const INTERMEDIATE_2026 = {
+    choose: 2,
+    options: ['MC301', 'MC327', 'MC331', 'MC332', 'MC333', 'MC334', 'MC342'],
+    note: 'Chosen in consultation with a Mass Communications Department Advisor. ' +
+          'A course used here cannot also count as a specialisation elective.'
+  };
+  const CATALOG_2026: Record<string, any> = {
+    'Advertising & Strategic Media': {
+      core: [...INTRO_2026, ...ADVANCED_2026],
+      intermediate: INTERMEDIATE_2026,
+      trackRequired: [
+        { id: 'MC325', label: 'MC 325', name: 'Fundamentals of Advertising' },
+        { id: 'MC389', label: 'MC 389', name: 'Media Planning' },
+        { id: 'MC422', label: 'MC 422', name: 'Strategic Media Writing' }
+      ],
+      electiveCount: 2,
+      electiveOptions: ['MC321','MC326','MC328','MC334','MC342','MC402','MC421',
+                        'MC440','MC441','MC449','MC472','MC478'],
+      electiveNote: null,
+      electiveRule: 'Choose two electives from MC 321, 326, 328, 334, 342, 402, 421, 440, 441, 449, 472 or 478, in consultation with an advisor.'
+    },
+    'Journalism': {
+      core: [...INTRO_2026, ...ADVANCED_2026],
+      intermediate: INTERMEDIATE_2026,
+      trackRequired: [
+        { id: 'MC322', label: 'MC 322', name: 'Copy Editing for the Media' },
+        { id: 'MC324', label: 'MC 324', name: 'Advanced News Reporting' }
+      ],
+      electiveCount: 3,
+      electiveOptions: ['MC321','MC328','MC330','MC332','MC341','MC342','MC424',
+                        'MC447','MC453','MC454','MC472'],
+      electiveNote: null,
+      electiveRule: 'Choose three electives from MC 321, 328, 330, 332, 341, 342, 424, 447, 453, 454 or 472, in consultation with an advisor.'
+    },
+    'Media Production': {
+      core: [...INTRO_2026, ...ADVANCED_2026],
+      intermediate: INTERMEDIATE_2026,
+      trackRequired: [
+        { id: 'MC330', label: 'MC 330', name: 'Advanced Broadcast Writing' }
+      ],
+      electiveCount: 4,
+      electiveOptions: ['MC301','MC328','MC331','MC332','MC333','MC334','MC342',
+                        'MC402','MC431','MC433','MC435','MC443','MC453','MC454','MC456'],
+      electiveNote: null,
+      electiveRule: 'Choose four electives from MC 301, 328, 331, 332, 333, 334, 342, 402, 431, 433, 435, 443, 453, 454 or 456, in consultation with an advisor.'
+    }
+  };
+
+  // The student picks the year they joined. Requirements differ by catalog and
+  // the department reconciles by advising, so guessing is not an option.
+  const CATALOGS: Record<string, any> = {
+    '2026-27 or later': CATALOG_2026,
+    'Fall 2025 to Spring 2026': CATALOG_2025
+  };
+  const CATALOG_KEYS = ['2026-27 or later', 'Fall 2025 to Spring 2026', 'Before Fall 2025'];
+  let selectedCatalog = '';
   // A rating that never moves across occupations is not a rating. These two
   // values are the floor the unrated courses sit at; show no score for them.
   const UNRATED_SCORES = [23.1, 23.8];
@@ -392,7 +474,41 @@
     return UNRATED_SCORES.some(v => Math.abs(v - score) < 0.05);
   }
 
-  $: requirements = REQUIREMENTS[selectedTrack] || null;
+  // Requirements are filled in for the student rather than left as homework.
+  // Before this, a student had to find and add nine compulsory courses by hand
+  // and the tool nagged them for the ones they missed, which is work the
+  // checksheets have already done.
+  let seededTrack = '';
+  function seedRequired(track: string) {
+    const set = CATALOGS[selectedCatalog];
+    const req = set && set[track];
+    const key = selectedCatalog + '|' + track;
+    if (!req || seededTrack === key) return;
+    seededTrack = key;
+    const fixed = [...req.core, ...req.trackRequired].map((r: any) => ({
+      courseKey: r.id, courseName: r.label + ' ' + r.name, tier: 'required', required: true
+    }));
+    const chosen = planCourses.filter(c => !c.required);
+    planCourses = [...fixed, ...chosen];
+  }
+  $: if (selectedTrack && selectedCatalog) seedRequired(selectedTrack);
+
+  $: electiveIds = new Set(requirements?.electiveOptions || []);
+  $: chosenElectives = planCourses.filter(
+    c => !c.required && electiveIds.has((c.courseKey || '').replace(/\s/g, '')));
+  $: electivesNeeded = requirements?.electiveCount ?? 0;
+  $: electivesLeft = Math.max(0, electivesNeeded - chosenElectives.length);
+  $: intermediateIds = new Set(requirements?.intermediate?.options || []);
+  $: chosenIntermediate = planCourses.filter(
+    c => !c.required && intermediateIds.has((c.courseKey || '').replace(/\s/g, '')));
+  $: intermediateNeeded = requirements?.intermediate?.choose ?? 0;
+  $: intermediateLeft = Math.max(0, intermediateNeeded - chosenIntermediate.length);
+  $: has300 = chosenElectives.some(
+    c => /MC\s*3\d\d/.test(c.courseKey || ''));
+
+  $: catalogSet = CATALOGS[selectedCatalog] || null;
+  $: requirements = (catalogSet && catalogSet[selectedTrack]) || null;
+  $: catalogTooOld = selectedCatalog === 'Before Fall 2025';
   $: planIds = new Set(planCourses.map(c => (c.courseId || c.courseKey || '').replace(/\s/g, '')));
   $: methodsMet = planCourses.some(c => (c.courseId || c.courseKey || '').includes('MC451'));
   $: missingCore = requirements
@@ -589,6 +705,10 @@
   }
 
   function removeFromPlan(courseKey: string) {
+    // A requirement is not a choice, so it has no remove control and this
+    // refuses one anyway, in case a stale button survives a refactor.
+    const target = planCourses.find(c => c.courseKey === courseKey);
+    if (target && target.required) return;
     planCourses = planCourses.filter(c => c.courseKey !== courseKey);
   }
 
@@ -1004,7 +1124,29 @@
       <!-- Degree requirements: always shown, never dependent on career choice -->
       <div class="card" style="margin-bottom:12px;">
         <h2>Degree Requirements</h2>
-        {#if !selectedTrack}
+        <label style="display:block;font-size:0.85rem;font-weight:600;margin-bottom:4px;">
+          Which academic year did you join the programme?
+        </label>
+        <select bind:value={selectedCatalog} style="width:100%;max-width:340px;padding:6px;margin-bottom:10px;">
+          <option value="">Choose your year...</option>
+          {#each CATALOG_KEYS as k}<option value={k}>{k}</option>{/each}
+        </select>
+        <p style="font-size:0.78rem;color:var(--grey-70);margin:0 0 10px;">
+          Requirements changed for students entering in 2026-27. You follow the ones in force
+          the year you joined, not the current ones.
+        </p>
+
+        {#if catalogTooOld}
+          <p style="font-size:0.85rem;color:var(--grey-70);">
+            Requirements that far back are not published in a form this tool can read, and the
+            department reconciles older catalogs through advising. Take your DegreeWorks audit to
+            your advisor: they will have the version that applies to you.
+          </p>
+        {:else if !selectedCatalog}
+          <p style="font-size:0.85rem;color:var(--grey-70);">
+            Pick your year above to see what you have to take.
+          </p>
+        {:else if !selectedTrack}
           <p style="font-size:0.85rem;color:var(--grey-70);">
             Choose your professional track on the Browse Careers tab and your required courses will
             be listed here. Requirements do not depend on which career you pick.
@@ -1014,15 +1156,26 @@
             These are required for <strong>{selectedTrack}</strong>. They are not suggestions, and
             recommended courses do not replace them.
           </p>
-          {#if missingCore.length || !methodsMet}
-            <div style="border:2px solid var(--accent);border-radius:8px;padding:10px 12px;margin:10px 0;background:rgba(200,16,46,0.06);">
-              <strong style="font-size:0.9rem;">Your plan is missing required courses.</strong>
-              <p style="font-size:0.82rem;margin:6px 0 0;color:var(--grey-70);">
-                {missingCore.length + (methodsMet ? 0 : 1)} requirement{(missingCore.length + (methodsMet ? 0 : 1)) === 1 ? '' : 's'}
-                still unmet. Bring this list and your DegreeWorks audit to advising.
-              </p>
-            </div>
-          {/if}
+          <div style="border:2px solid var(--accent);border-radius:8px;padding:10px 12px;margin:10px 0;background:rgba(200,16,46,0.06);">
+            <strong style="font-size:0.9rem;">
+              {#if electivesLeft === 0}
+                Your electives are chosen.
+              {:else}
+                Choose {electivesLeft} more elective{electivesLeft === 1 ? '' : 's'}.
+              {/if}
+            </strong>
+            <p style="font-size:0.82rem;margin:6px 0 0;color:var(--grey-70);">
+              The required courses above are filled in for you. This track asks for
+              {electivesNeeded} elective{electivesNeeded === 1 ? '' : 's'}, and you have chosen
+              {chosenElectives.length}.
+              {#if requirements.electiveNote}
+                {requirements.electiveNote}
+                {#if chosenElectives.length && !has300}
+                  <strong>None of your choices is 300-level yet.</strong>
+                {/if}
+              {/if}
+            </p>
+          </div>
 
           <h3 style="font-size:0.9rem;margin-top:12px;">Core, required of everyone on this track</h3>
           {#each requirements.core as r}
@@ -1037,6 +1190,15 @@
             </div>
           {/each}
 
+          {#if requirements.intermediate}
+            <h3 style="font-size:0.9rem;margin-top:14px;">Intermediate Core, choose {requirements.intermediate.choose}</h3>
+            <p style="font-size:0.8rem;color:var(--grey-70);margin:4px 0 0;">
+              {intermediateLeft === 0 ? 'Chosen.' : 'Choose ' + intermediateLeft + ' more.'}
+              From MC 301, 327, 331, 332, 333, 334 or 342. {requirements.intermediate.note}
+            </p>
+          {/if}
+
+          {#if requirements.methodsSlot}
           <h3 style="font-size:0.9rem;margin-top:14px;">Research and analysis requirement</h3>
           <div class="plan-item">
             <div>
@@ -1051,6 +1213,7 @@
           <p style="font-size:0.8rem;color:var(--grey-70);margin:4px 0 0 22px;">
             {requirements.methodsSlot.exception}
           </p>
+          {/if}
 
           <h3 style="font-size:0.9rem;margin-top:14px;">Required for this track</h3>
           {#each requirements.trackRequired as r}
@@ -1065,6 +1228,15 @@
             </div>
           {/each}
           <p style="font-size:0.8rem;color:var(--grey-70);margin-top:8px;">{requirements.electiveRule}</p>
+          <p style="font-size:0.78rem;color:var(--grey-70);margin-top:10px;border-top:1px solid var(--grey-20);padding-top:8px;">
+            Requirements here are read from the catalog for <strong>{selectedCatalog}</strong> and do not depend
+            on the career you pick. They can differ by catalog year, and this is a planning aid
+            rather than a degree audit:
+            <a href="https://degreeworks.siue.edu/Dashboard" rel="noopener" target="_blank">DegreeWorks</a>
+            is the record, and your advisor settles anything the two disagree about. Credit hours are
+            deliberately not totalled here, because MC 451 counts toward two slots at once and the
+            sheets do not say whether a statistics substitute does the same.
+          </p>
 
           <p style="font-size:0.78rem;color:var(--grey-50);margin-top:12px;border-top:1px solid var(--grey-10);padding-top:8px;">
             This list follows the Fall 2025 catalog and later. Requirements follow the catalog term you
@@ -1099,7 +1271,7 @@
 
           <div class="plan-actions">
             <button class="btn btn-primary" on:click={printPlan}>Print Plan</button>
-            <button class="btn btn-secondary" on:click={() => planCourses = []}>Clear All</button>
+            <button class="btn btn-secondary" on:click={() => planCourses = planCourses.filter(c => c.required)}>Clear All</button>
           </div>
         </div>
 
