@@ -1,13 +1,12 @@
 /* src/app.css — Career Pathfinder */
 
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
   --white: #fff;
   --grey-05: #f7f7f7;
   --grey-10: #f2f2f2;
   --grey-20: #ddd;
-  --grey-50: #888;
+  --grey-50: #666;
   --grey-70: #555;
   --grey-90: #1a1a1a;
   --accent: #e31837;
@@ -16,8 +15,8 @@
   --journalism: #1a6baa;
   --production: #2e7d32;
   --strategic: #7b1fa2;
-  --title-font: "Lexend", sans-serif;
-  --body-font: "Public Sans", sans-serif;
+  --title-font: "Lexend Variable", "Lexend", sans-serif;
+  --body-font: "Public Sans Variable", "Public Sans", sans-serif;
 }
 
 /* Reset */
@@ -40,15 +39,15 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
 }
 
-h1 { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
+h1 { font-size: 1.5rem; font-weight: 800; color: var(--accent-dark); }
 h2 { font-size: 1.25rem; font-weight: 700; color: var(--grey-90); }
 h3 { font-size: 1.1rem; font-weight: 600; color: var(--grey-90); }
 h4 { font-size: 1rem; font-weight: 600; color: var(--grey-70); }
 
 p { margin: 0 0 1em 0; }
 
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a { color: var(--accent-dark); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
 
 /* App container — vertical-first for embed */
 .app {
@@ -86,7 +85,7 @@ a:hover { text-decoration: underline; }
 
 .tab:hover { color: var(--grey-90); }
 .tab.active {
-  color: var(--accent);
+  color: var(--accent-dark);
   border-bottom-color: var(--accent);
 }
 
@@ -163,8 +162,8 @@ a:hover { text-decoration: underline; }
   letter-spacing: 0.02em;
 }
 
-.badge-journalism { background: #e3f0fa; color: var(--journalism); }
-.badge-production { background: #e8f5e9; color: var(--production); }
+.badge-journalism { background: #e3f0fa; color: #155a90; }
+.badge-production { background: #e8f5e9; color: #1b5e20; }
 .badge-strategic { background: #f3e5f5; color: var(--strategic); }
 
 /* Course tier badges */
@@ -291,7 +290,7 @@ a:hover { text-decoration: underline; }
   font-family: var(--title-font);
   font-size: 2.5rem;
   font-weight: 800;
-  color: var(--accent);
+  color: var(--accent-dark);
   line-height: 1;
 }
 
@@ -334,7 +333,7 @@ a:hover { text-decoration: underline; }
   padding: 4px 8px;
 }
 
-.plan-remove:hover { color: var(--accent); }
+.plan-remove:hover { color: var(--accent-dark); }
 
 .plan-actions {
   display: flex;
@@ -467,6 +466,10 @@ html { background: var(--white); }
   --strategic:  #cc92e2;
 }
 
+:root[data-theme='dark'] .badge-journalism { background: var(--grey-10); color: var(--journalism); }
+:root[data-theme='dark'] .badge-production { background: var(--grey-10); color: var(--production); }
+:root[data-theme='dark'] .badge-strategic { background: var(--grey-10); color: var(--strategic); }
+
 /* App header row holding the title and the theme toggle */
 .app-header {
   display: flex;
@@ -479,7 +482,8 @@ html { background: var(--white); }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 12px;
+  min-height: 44px;
+  padding: 7px 14px;
   font-family: var(--body-font);
   font-size: 0.8rem;
   font-weight: 600;
@@ -492,7 +496,6 @@ html { background: var(--white); }
 }
 .theme-toggle:hover { color: var(--grey-90); border-color: var(--grey-50); }
 .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.theme-toggle .icon { font-size: 1rem; line-height: 1; }
 
 @media print {
   .theme-toggle { display: none; }

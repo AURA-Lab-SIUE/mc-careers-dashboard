@@ -1,6 +1,8 @@
 <!-- src/routes/+layout.svelte -->
 <script>
   // Pull in your global styles:
+  import '@fontsource-variable/lexend';
+  import '@fontsource-variable/public-sans';
   import '../app.css';
 </script>
 

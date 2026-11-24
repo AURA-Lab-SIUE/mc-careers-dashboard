@@ -793,12 +793,12 @@
 </script>
 
 <div class="app">
+<main>
   <div class="app-header">
     <h1>Career Pathfinder</h1>
     <button class="theme-toggle" type="button" on:click={toggleTheme}
       aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
       title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}>
-      <span class="icon" aria-hidden="true">{theme === 'dark' ? '☀️' : '🌙'}</span>
       <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
     </button>
   </div>
@@ -882,7 +882,7 @@
             result.track
           )}>
             <div>
-              <span style="font-family:var(--title-font);font-weight:700;color:var(--accent);margin-right:8px;">#{i + 1}</span>
+              <span style="font-family:var(--title-font);font-weight:700;color:var(--accent-dark);margin-right:8px;">#{i + 1}</span>
               <span style="font-size:0.9rem;font-weight:600;">{result.title}</span>
               <span class="badge {trackBadgeClass(result.track)}" style="margin-left:8px;">{result.track}</span>
             </div>
@@ -931,7 +931,7 @@
           <!-- Expandable variants -->
           {#if careerVariants.length > 1}
             <details style="margin-top:12px;">
-              <summary style="cursor:pointer;font-size:0.85rem;font-weight:600;color:var(--accent);">
+              <summary style="cursor:pointer;font-size:0.85rem;font-weight:600;color:var(--accent-dark);">
                 {careerVariants.length} related job titles
               </summary>
               <div style="margin-top:8px;">
@@ -1082,10 +1082,10 @@
         <label for="salary-range">Minimum Annual Salary (Illinois)</label>
         <input id="salary-range" type="range" bind:value={salaryMin}
           min="25000" max="100000" step="5000"
-          style="width:100%;accent-color:var(--accent);" />
+          style="width:100%;accent-color:var(--accent-dark);" />
         <div style="display:flex;justify-content:space-between;font-size:0.8rem;color:var(--grey-50);">
           <span>$25,000</span>
-          <span style="font-weight:700;color:var(--accent);font-size:1rem;">{formatWage(salaryMin)}+</span>
+          <span style="font-weight:700;color:var(--accent-dark);font-size:1rem;">{formatWage(salaryMin)}+</span>
           <span>$100,000</span>
         </div>
       </div>
@@ -1108,7 +1108,7 @@
               <span style="font-size:0.9rem;font-weight:600;">{career.title}</span>
               <span class="badge {trackBadgeClass(career.track)}" style="margin-left:8px;">{career.track}</span>
             </div>
-            <span style="font-family:var(--title-font);font-weight:700;color:var(--accent);">
+            <span style="font-family:var(--title-font);font-weight:700;color:var(--accent-dark);">
               {formatWage(career.wage)}
             </span>
           </div>
@@ -1286,6 +1286,7 @@
       {/if}
     </div>
   {/if}
+</main>
 
   <!-- Footer -->
   <footer style="text-align:center;padding:24px 0 12px;font-size:0.75rem;color:var(--grey-50);border-top:1px solid var(--grey-10);margin-top:24px;">
